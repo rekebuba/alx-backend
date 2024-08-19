@@ -43,7 +43,7 @@ class Server:
         Handles gaps in indexing due to deleted rows.
         """
         data = self.indexed_dataset()
-        assert 0 <= index < len(data), "Index out of range."
+        assert index is not None and index >= 0 and index <= max(data.keys())
 
         current_index = index
         page_data = []
