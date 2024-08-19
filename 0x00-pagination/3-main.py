@@ -15,8 +15,8 @@ except AssertionError:
     print("AssertionError raised when out of range")        
 
 
-index = 3
-page_size = 2
+index = 0
+page_size = 10
 
 print("Nb items: {}".format(len(server._Server__indexed_dataset)))
 

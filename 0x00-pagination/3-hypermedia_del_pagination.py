@@ -4,7 +4,6 @@ Deletion-resilient hypermedia pagination
 """
 
 import csv
-import math
 from typing import List, Dict
 
 
@@ -40,11 +39,26 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = 0, page_size: int = 10) -> Dict:
-        page_index = (index * page_size) - index
-        next_index = page_index + page_size
+        """Retrieves info about page from a given index with a specified size.
+        Handles gaps in indexing due to deleted rows.
+        """
+        data = self.indexed_dataset()
+        assert 0 <= index < len(data), "Index out of range."
+
+        current_index = index
+        page_data = []
+        data_keys = sorted(data.keys())
+
+        while len(page_data) < page_size and current_index < len(data_keys):
+            if current_index in data:
+                page_data.append(data[current_index])
+            current_index += 1
+
+        next_index = current_index if current_index < len(data_keys) else None
+
         return {
-            "index": page_index,
-            "next_index": next_index,
-            "page_size": page_size,
-            "data": self.__dataset[page_index:next_index]
+            'index': index,
+            'next_index': next_index,
+            'page_size': len(page_data),
+            'data': page_data,
         }
