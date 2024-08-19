@@ -39,5 +39,12 @@ class Server:
             }
         return self.__indexed_dataset
 
-    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-            pass
+    def get_hyper_index(self, index: int = 0, page_size: int = 10) -> Dict:
+        page_index = (index * page_size) - index
+        next_index = page_index + page_size
+        return {
+            "index": page_index,
+            "next_index": next_index,
+            "page_size": page_size,
+            "data": self.__dataset[page_index:next_index]
+        }
