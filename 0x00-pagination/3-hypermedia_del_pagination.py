@@ -45,16 +45,19 @@ class Server:
         data = self.indexed_dataset()
         assert index is not None and index >= 0 and index <= max(data.keys())
 
-        current_index = index
         page_data = []
-        data_keys = sorted(data.keys())
+        data_count = 0
+        next_index = None
+        start = index if index else 0
 
-        while len(page_data) < page_size and current_index < len(data_keys):
-            if current_index in data:
-                page_data.append(data[current_index])
-            current_index += 1
-
-        next_index = current_index if current_index < len(data_keys) else None
+        for i, item in data.items():
+            if i >= start and data_count < page_size:
+                page_data.append(item)
+                data_count += 1
+                continue
+            if data_count == page_size:
+                next_index = i
+                break
 
         return {
             'index': index,
