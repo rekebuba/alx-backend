@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """FIFO caching Algorithm"""
 from typing import Any, Optional
-BaseCaching = __import__('base_caching').BaseCaching
+from collections import OrderedDict
+from base_caching import BaseCaching
 
 
 class FIFOCache(BaseCaching):
@@ -9,6 +10,7 @@ class FIFOCache(BaseCaching):
 
     def __init__(self) -> None:
         super().__init__()
+        self.cache_data = OrderedDict()
 
     def put(self, key: Optional[Any], item: Optional[Any]) -> None:
         """Must assign to the dictionary the item value for the key.
