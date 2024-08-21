@@ -27,9 +27,8 @@ class FIFOCache(BaseCaching):
                 key not in self.cache_data
             )
             if valid:
-                first_key = list(self.cache_data)[0][0]
-                print(f'DISCARD: {first_key}')
-                del self.cache_data[first_key]
+                first_key, _ = self.cache_data.popitem(False)
+                print("DISCARD:", first_key)
 
             self.cache_data[key] = item
 
